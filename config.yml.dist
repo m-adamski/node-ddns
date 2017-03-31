@@ -8,6 +8,11 @@ services:
         service: https://api.ipify.org?format=json
         interval: 10000
 
+    cloudflare:
+        account:
+        api_key:
+        zone_id:
+
     logger:
         console:
             colorize: true

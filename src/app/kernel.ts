@@ -9,7 +9,7 @@ export class Kernel {
     protected _configFile: string;
     protected _eventManager: EventManager;
     protected _config: Config;
-    private _logger: Logger;
+    protected _logger: Logger;
     protected _ip: IP;
 
     /**

@@ -1,7 +1,7 @@
 {
     "name": "dynamic-dns",
     "version": "1.0.0",
-    "description": "DDNS for Cloudflare",
+    "description": "Update Cloudflare DNS record with your current IP address",
     "main": "lib/index.js",
     "typings": "lib/index",
     "repository": "git@github.com:m-adamski/node-ddns.git",
