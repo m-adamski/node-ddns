@@ -28,7 +28,28 @@ export class EventManager {
         }
     }
 
+    /**
+     * Broadcast Event.
+     *
+     * @param event
+     */
     public broadcastEvent(event: IEvent): void {
-        console.log(`Broadcasting event: ${event}`);
+
+        // Define variable with Event Class
+        let eventClass: string = event.constructor["name"];
+
+        // Move every registered Event Listener
+        this._listenersCollection.forEach((eventListener) => {
+
+            // Get Subscribed Events from current Event Listener
+            let subscribedEvents = eventListener.getSubscribedEvents();
+
+            // Check if current Event Listener subscribe current Event
+            if (subscribedEvents.has(eventClass)) {
+
+                let eventProcessMethodName = subscribedEvents.get(eventClass);
+                eventListener[eventProcessMethodName](event);
+            }
+        });
     }
 }

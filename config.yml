@@ -1,3 +1,18 @@
-ip:
-    service: https://api.ipify.org?format=json
-    interval: 10000
+app:
+    logger:
+        - console
+        - file
+
+services:
+    ip:
+        service: https://api.ipify.org?format=json
+        interval: 10000
+
+    logger:
+        console:
+            colorize: true
+            timestamp: true
+
+        file:
+            filename: "log/log-"
+            datePattern: "yyyy-MM-dd.log"

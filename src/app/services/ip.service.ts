@@ -6,7 +6,7 @@ import {IPChangedEvent} from "../events/ipchanged.event";
 export class IP {
 
     protected _kernel: Kernel;
-    
+
     protected _configServicePath: string;
     protected _configIntervalPath: string;
 
@@ -19,13 +19,17 @@ export class IP {
      * Constructor.
      *
      * @param kernel
-     * @param configServicePath
-     * @param configIntervalPath
      */
-    constructor(kernel: Kernel, configServicePath: string, configIntervalPath: string) {
+    constructor(kernel: Kernel) {
         this._kernel = kernel;
-        this._configServicePath = configServicePath;
-        this._configIntervalPath = configIntervalPath;
+        this._configServicePath = "services.ip.service";
+        this._configIntervalPath = "services.ip.interval";
+    }
+
+    /**
+     * Init IP Service.
+     */
+    public initService(): void {
 
         // Get required params from Config
         this.readConfig();
@@ -58,10 +62,16 @@ export class IP {
      */
     private requestIP(configService: string): void {
 
+        // Log message
+        this._kernel.logger.log("info", "Sending request to receive current IP address..", "IP");
+
         // Send Request to IP Service
         this.requestPromise(configService).then((response) => {
 
             if (response.ip !== undefined) {
+
+                // Log & process received IP address
+                this._kernel.logger.log("info", `Received IP address: ${response.ip}`, "IP");
                 this.processIP(response.ip);
             } else {
                 throw new IPException("Response from IP Service does not contain 'ip' field.");
@@ -78,6 +88,9 @@ export class IP {
 
         // Check if currentIP is different than global IP
         if (this._currentIP != currentIP) {
+
+            // Log message
+            this._kernel.logger.log("info", `IP address changed [${this._currentIP} => ${currentIP}] - broadcasting event..`, "IP");
 
             // Create & Broadcast Event
             let ipChangedEvent = new IPChangedEvent(currentIP);
