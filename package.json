@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "forever-monitor": "^1.7.1",
+        "fs": "^0.0.1-security",
         "js-yaml": "^3.8.2",
         "request": "^2.81.0"
     }
