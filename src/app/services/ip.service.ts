@@ -6,13 +6,8 @@ import {IPChangedEvent} from "../events/ipchanged.event";
 export class IP {
 
     protected _kernel: Kernel;
-
-    protected _configServicePath: string;
-    protected _configIntervalPath: string;
-
     protected _configService: string;
     protected _configInterval: number;
-
     protected _currentIP: string;
 
     /**
@@ -22,8 +17,6 @@ export class IP {
      */
     constructor(kernel: Kernel) {
         this._kernel = kernel;
-        this._configServicePath = "services.ip.service";
-        this._configIntervalPath = "services.ip.interval";
     }
 
     /**
@@ -121,11 +114,11 @@ export class IP {
      */
     private readConfig(): void {
 
-        if (this._kernel.config.has(this._configServicePath) && this._kernel.config.has(this._configIntervalPath)) {
+        if (this._kernel.config.has("services.ip.service") && this._kernel.config.has("services.ip.interval")) {
 
             // Assign variables
-            this._configService = this._kernel.config.get(this._configServicePath);
-            this._configInterval = this._kernel.config.get(this._configIntervalPath);
+            this._configService = this._kernel.config.get("services.ip.service");
+            this._configInterval = this._kernel.config.get("services.ip.interval");
         } else {
             throw new IPException("Config file does not contain required parameters.");
         }

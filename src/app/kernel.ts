@@ -33,7 +33,7 @@ export class Kernel {
         this._ip = new IP(this);
 
         // Register Event Listeners
-        this.eventManager.registerListener(new IPChangedListener());
+        this.eventManager.registerListener(new IPChangedListener(this));
 
         // Log Welcome message
         this._logger.log("info", "Cloudflare DDNS Service is running..", "Kernel");
