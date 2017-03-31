@@ -1,1 +1,3 @@
-version: 1.0.0
+ip:
+    service: https://api.ipify.org?format=json
+    interval: 10000

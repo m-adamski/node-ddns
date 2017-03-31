@@ -6,6 +6,9 @@ export class EventManager {
 
     protected _listenersCollection: Set<IListener>;
 
+    /**
+     * Constructor.
+     */
     constructor() {
         this._listenersCollection = new Set<IListener>();
     }
@@ -26,7 +29,6 @@ export class EventManager {
     }
 
     public broadcastEvent(event: IEvent): void {
-
-        // TODO
+        console.log(`Broadcasting event: ${event}`);
     }
 }
