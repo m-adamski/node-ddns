@@ -12,7 +12,7 @@ export class Kernel {
     protected _config: Config;
     protected _logger: Logger;
     protected _ip: IP;
-    protected _cloudflare: Cloudflare;
+    private _cloudflare: Cloudflare;
 
     /**
      * Constructor.
@@ -64,6 +64,15 @@ export class Kernel {
      */
     get logger(): Logger {
         return this._logger;
+    }
+
+    /**
+     * Get Cloudflare.
+     *
+     * @return {Cloudflare}
+     */
+    get cloudflare(): Cloudflare {
+        return this._cloudflare;
     }
 
     /**

@@ -5,7 +5,7 @@ app:
 
     cloudflare:
         record_details:
-            type: TXT
+            type: A
             name: example.com
             content: 127.0.0.1
             ttl: 1

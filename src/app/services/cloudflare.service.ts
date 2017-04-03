@@ -1,6 +1,7 @@
 import * as Request from "request-promise";
 import {Kernel} from "../kernel";
 import {CloudflareException} from "../exceptions/cloudflare.exception";
+import {ICloudflareResponse} from "../interfaces/cloudflare_response.interface";
 
 export class Cloudflare {
 
@@ -17,7 +18,17 @@ export class Cloudflare {
         this._kernel = kernel;
     }
 
-    public listDNSRecords(type?: string, name?: string, content?: string, page?: number, perPage?: number): void {
+    /**
+     * List all DNS Records with specified params.
+     *
+     * @param type
+     * @param name
+     * @param content
+     * @param page
+     * @param perPage
+     * @return {Request.RequestPromise}
+     */
+    public listDNSRecords(type?: string, name?: string, content?: string, page?: number, perPage?: number): Request.RequestPromise {
 
         // Define default variables
         let filterType: string = type || null;
@@ -45,23 +56,91 @@ export class Cloudflare {
 
             // Try to generate Request Uri & Request Promise
             let requestUri = this.buildRequestUri(["dns_records"]);
-            let requestPromise = this.buildRequest(requestUri, this.mergeObjects(requestParams, {
+            return this.buildRequest("GET", requestUri, this.mergeObjects(requestParams, {
                 "page": filterPage,
                 "per_page": filterPerPage
-            }));
-
-            // Get Request Response
-            requestPromise.then((response) => {
-
-                console.log(response);
-
-            }).catch((error => {
-                throw new CloudflareException(`Cloudflare Api Exception: ${error}`);
             }));
 
         } catch (error) {
             throw error;
         }
+    }
+
+    /**
+     * Create new DNS Record.
+     *
+     * @param type
+     * @param name
+     * @param content
+     * @param ttl
+     * @param proxied
+     * @return {Request.RequestPromise}
+     */
+    public createDNSRecord(type: string, name: string, content: string, ttl?: number, proxied?: boolean): Request.RequestPromise {
+
+        // Check if specified variables are not null
+        if (type && name && content) {
+
+            // Define default variables
+            let requestTTL: number = ttl || 1;
+            let requestProxied: boolean = proxied || false;
+
+            try {
+
+                // Try to generate Request Uri & Request Promise
+                let requestUri = this.buildRequestUri(["dns_records"]);
+                return this.buildRequest("POST", requestUri, {}, {
+                    "type": type,
+                    "name": name,
+                    "content": content,
+                    "ttl": requestTTL,
+                    "proxied": requestProxied
+                });
+
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        throw new CloudflareException("Configuration file does not contain required params to generate Cloudflare Request.");
+    }
+
+    /**
+     * Update existing DNS with specified ID.
+     *
+     * @param id
+     * @param type
+     * @param name
+     * @param content
+     * @param ttl
+     * @param proxied
+     * @return {Request.RequestPromise}
+     */
+    public updateDNSRecord(id: string, type: string, name: string, content: string, ttl?: number, proxied?: boolean): Request.RequestPromise {
+
+        // Check if specified variables are not null
+        if (id && content) {
+
+            // Define default variables
+            let requestTTL: number = ttl || 1;
+            let requestProxied: boolean = proxied || false;
+
+            try {
+
+                // Try to generate Request Uri & Request Promise
+                let requestUri = this.buildRequestUri(["dns_records", id]);
+                return this.buildRequest("PUT", requestUri, {}, {
+                    "content": content,
+                    "ttl": requestTTL,
+                    "proxied": requestProxied
+                });
+
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        throw new CloudflareException("Configuration file does not contain required params to generate Cloudflare Request.");
     }
 
     /**
@@ -98,11 +177,13 @@ export class Cloudflare {
     /**
      * Generate Request Promise.
      *
+     * @param method
      * @param uri
      * @param params
-     * @return {requestPromise.RequestPromise}
+     * @param data
+     * @return {Request.RequestPromise}
      */
-    private buildRequest(uri: string, params?: object): Request.RequestPromise {
+    private buildRequest(method: string, uri: string, params?: object, data?: object): Request.RequestPromise {
 
         // Get required parameters from Config
         let requestAuthEmail: string = this._kernel.config.has("services.cloudflare.account") ? this._kernel.config.get("services.cloudflare.account") : null;
@@ -112,8 +193,10 @@ export class Cloudflare {
 
             // Return Request Promise
             return Request({
+                method: method,
                 uri: uri,
                 qs: params ? params : {},
+                body: data ? data : {},
                 headers: {
                     "X-Auth-Email": requestAuthEmail,
                     "X-Auth-Key": requestAuthApiKey

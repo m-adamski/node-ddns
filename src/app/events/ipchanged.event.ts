@@ -1,6 +1,6 @@
 export class IPChangedEvent {
 
-    protected _currentIP: string;
+    private _currentIP: string;
 
     /**
      * Constructor.
@@ -9,5 +9,14 @@ export class IPChangedEvent {
      */
     constructor(currentIP: string) {
         this._currentIP = currentIP;
+    }
+
+    /**
+     * Get Current IP.
+     *
+     * @return {string}
+     */
+    get currentIP(): string {
+        return this._currentIP;
     }
 }
