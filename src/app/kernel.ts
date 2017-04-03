@@ -3,6 +3,7 @@ import {EventManager} from "./services/event_manager.service";
 import {Config} from "./services/config.service";
 import {Logger} from "./services/logger.service";
 import {IPChangedListener} from "./listeners/ipchanged.listener";
+import {Cloudflare} from "./services/cloudflare.service";
 
 export class Kernel {
 
@@ -11,6 +12,7 @@ export class Kernel {
     protected _config: Config;
     protected _logger: Logger;
     protected _ip: IP;
+    protected _cloudflare: Cloudflare;
 
     /**
      * Constructor.
@@ -26,19 +28,14 @@ export class Kernel {
      */
     public init(): void {
 
-        // Create all required Services
-        this._eventManager = new EventManager();
-        this._config = new Config(this._configFile);
-        this._logger = new Logger(this);
-        this._ip = new IP(this);
+        // Initialize Services
+        this.initServices();
 
-        // Register Event Listeners
+        // Initialize Event Listeners
         this.eventManager.registerListener(new IPChangedListener(this));
 
-        // Log Welcome message
-        this._logger.log("info", "Cloudflare DDNS Service is running..", "Kernel");
-
-        // Init IP Service
+        // Initialize IP Service
+        this._logger.log("info", "Initializing services..", "Kernel");
         this._ip.initService();
     }
 
@@ -67,5 +64,18 @@ export class Kernel {
      */
     get logger(): Logger {
         return this._logger;
+    }
+
+    /**
+     * Init Services.
+     */
+    private initServices(): void {
+
+        // Create all required Services
+        this._eventManager = new EventManager();
+        this._config = new Config(this._configFile);
+        this._logger = new Logger(this);
+        this._ip = new IP(this);
+        this._cloudflare = new Cloudflare(this);
     }
 }

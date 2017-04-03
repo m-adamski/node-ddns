@@ -1,6 +1,7 @@
 import {Kernel} from "../kernel";
 import {IListener} from "../interfaces/listener.interface";
 import {IEvent} from "../interfaces/event.interface";
+import {Cloudflare} from "../services/cloudflare.service";
 
 export class IPChangedListener implements IListener {
 
@@ -30,6 +31,9 @@ export class IPChangedListener implements IListener {
     }
 
     public onIPChanged(event: IEvent): void {
+
+        let cloudflareService = new Cloudflare(this._kernel);
+        cloudflareService.listDNSRecords();
 
     }
 }

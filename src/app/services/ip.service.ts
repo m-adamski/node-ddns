@@ -1,4 +1,4 @@
-import * as RequestPromise from "request-promise";
+import * as Request from "request-promise";
 import {Kernel} from "../kernel";
 import {IPException} from "../exceptions/ip.exception";
 import {IPChangedEvent} from "../events/ipchanged.event";
@@ -98,10 +98,10 @@ export class IP {
      * Send Request to IP Service.
      *
      * @param configService
-     * @return {requestPromise.RequestPromise}
+     * @return {Request.RequestPromise}
      */
-    private requestPromise(configService: string): RequestPromise.RequestPromise {
-        return RequestPromise({
+    private requestPromise(configService: string): Request.RequestPromise {
+        return Request({
             uri: configService,
             json: true
         });

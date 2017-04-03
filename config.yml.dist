@@ -3,6 +3,14 @@ app:
         - console
         - file
 
+    cloudflare:
+        record_details:
+            type: TXT
+            name: example.com
+            content: 127.0.0.1
+            ttl: 1
+            proxied: false
+
 services:
     ip:
         service: https://api.ipify.org?format=json
