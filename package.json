@@ -3,13 +3,11 @@
     "version": "1.0.0",
     "description": "Update Cloudflare DNS record with your current IP address",
     "main": "lib/index.js",
-    "typings": "lib/index",
     "repository": "git@github.com:m-adamski/node-ddns.git",
     "author": "Maciej Adamski <m.adamski@ideacode.pl>",
     "license": "MIT",
     "scripts": {
-        "build": "tsc",
-        "build-prod": "tsc --declaration"
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/es6-collections": "^0.5.29",
@@ -17,12 +15,6 @@
         "@types/js-yaml": "^3.5.29",
         "@types/request-promise": "^4.1.33",
         "@types/winston": "^2.3.0",
-        "gulp": "^3.9.1",
-        "gulp-sourcemaps": "^2.5.0",
-        "gulp-tslint": "^7.1.0",
-        "gulp-typescript": "^3.1.6",
-        "tslint": "^4.5.1",
-        "tslint-eslint-rules": "^3.5.1",
         "typescript": "^2.2.2"
     },
     "dependencies": {

@@ -1,7 +1,6 @@
 import * as Request from "request-promise";
 import {Kernel} from "../kernel";
 import {CloudflareException} from "../exceptions/cloudflare.exception";
-import {ICloudflareResponse} from "../interfaces/cloudflare_response.interface";
 
 export class Cloudflare {
 
@@ -130,6 +129,8 @@ export class Cloudflare {
                 // Try to generate Request Uri & Request Promise
                 let requestUri = this.buildRequestUri(["dns_records", id]);
                 return this.buildRequest("PUT", requestUri, {}, {
+                    "type": type,
+                    "name": name,
                     "content": content,
                     "ttl": requestTTL,
                     "proxied": requestProxied

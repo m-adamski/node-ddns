@@ -59,7 +59,7 @@ export class IPChangedListener implements IListener {
 
                         // Check Response
                         if (response.success) {
-                            this._kernel.logger.log("success", "DNS Record updated successfully!", "IPChanged Listener");
+                            this._kernel.logger.log("info", "DNS Record updated successfully!", "IPChanged Listener");
                         } else {
                             this._kernel.logger.log("error", `Error while updating DNS Record. Response: ${response.errors}`, "IPChanged Listener");
                         }
@@ -75,7 +75,7 @@ export class IPChangedListener implements IListener {
 
                         // Check Response
                         if (response.success) {
-                            this._kernel.logger.log("success", "DNS Record created successfully!", "IPChanged Listener");
+                            this._kernel.logger.log("info", "DNS Record created successfully!", "IPChanged Listener");
                         } else {
                             this._kernel.logger.log("error", `Error while creating DNS Record. Response: ${response.errors}`, "IPChanged Listener");
                         }

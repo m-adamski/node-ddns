@@ -6,8 +6,7 @@ app:
     cloudflare:
         record_details:
             type: A
-            name: example.com
-            content: 127.0.0.1
+            name: ibee.pl
             ttl: 1
             proxied: false
 
